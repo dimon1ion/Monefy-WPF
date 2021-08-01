@@ -11,48 +11,82 @@
             <RowDefinition Height="2.4*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0"
-                Orientation="Horizontal"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center">
-            <ItemsControl ItemsSource="{Binding PieChart}" Margin="20,0"/>
-
-            <ScrollViewer Margin="20,0"
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#7ac795">
+                <Menu FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Background="#f2fff6">
+                    <MenuItem Header="Options" Foreground="White" Background="#7ac795" BorderBrush="#7ac795">
+                        <MenuItem Header="Filter" Foreground="Black">
+                            <MenuItem Header="Day" Command="{Binding FilterToday}"/>
+                            <MenuItem Header="Month" Command="{Binding FilterMonth}"/>
+                            <MenuItem Header="Year" Command="{Binding FilterYear}"/>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+                <Label Foreground="White" FontWeight="Bold" FontStyle="Italic" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Monefy"/>
+            </Grid>
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.15*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+                    <TextBlock Foreground="Green" FontSize="15" FontStyle="Oblique" FontWeight="Heavy">
+                        <Run Text="{Binding Profit}"/>
+                        <Run Text="$"/>
+                    </TextBlock>
+                    <TextBlock Foreground="Red" FontSize="15" FontStyle="Oblique" FontWeight="Heavy">
+                        <Run Text="{Binding Expens}"/>
+                        <Run Text="$"/>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+            <ItemsControl Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding PieChart}" Margin="20,0"/>
+            <ScrollViewer Grid.Column="1" Grid.Row="1" Margin="20,0"
                       Padding="10"
                       VerticalAlignment="Center"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Hidden">
-                <ItemsControl ItemsSource="{Binding Categories, Mode=OneWay}">
+                <ItemsControl ItemsSource="{Binding Categories}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal"
                                     Margin="10">
-                                <Rectangle Width="20"
+                                <Rectangle Margin="0,0,7,0" Width="20"
                                        Height="20"
-                                       Fill="{Binding Color}"
-                                       Margin="0,0,5,0"
-                                       VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding Cotegorie}"
-                                       FontSize="12"
-                                       VerticalAlignment="Center"/>
-
-                                <TextBlock Text="{Binding PrecentAge}"
-                                       Foreground="{Binding Color}"
-                                       FontSize="12"
-                                       Margin="20,0,0,0"
-                                       VerticalAlignment="Center"/>
-
-                                <TextBlock Text="%"
-                                       Foreground="{Binding Color}"
-                                       FontSize="12"
-                                       VerticalAlignment="Center"/>
+                                       Fill="{Binding Color}"/>
+                                <TextBlock>
+                                    <Run Text="{Binding Cotegorie}"
+                                       FontSize="12"/>
+                                </TextBlock>
+                                <TextBlock Margin="5,0,0,0">
+                                    <Run Text="{Binding PrecentAge}"
+                                         Foreground="{Binding Color}"
+                                         FontSize="12"/>
+                                    <Run Text="%"
+                                         Foreground="{Binding Color}"
+                                         FontSize="12"/>
+                                </TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-        </StackPanel>
+            <ListBox Visibility="Hidden" Grid.Row="2" Grid.ColumnSpan="2" Background="#f2fff6" BorderBrush="#f2fff6" ItemsSource="{Binding DataFilter}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Cotegorie}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -62,13 +96,13 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" Grid.ColumnSpan="2" >
+            <Grid Grid.Row="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="0,2,2,0"/>
+                <Button Grid.Row="0" Grid.Column="1" BorderBrush="{Binding BRBorderBrush}" BorderThickness="0,2,2,0" Content="{Binding Result}" Background="{Binding BRBackground}" FontSize="15" Foreground="White"/>
             </Grid>
             <Button Name="minusButton" Command="{Binding ShowCalculate}" CommandParameter="{Binding ElementName=minusButton}" Width="100" Height="100" Grid.Row="1" Grid.Column="0" Content="Minus" FontSize="30" Background="White" Foreground="#f47f7c" BorderBrush="#f47f7c" BorderThickness="6">
                 <Button.Resources>

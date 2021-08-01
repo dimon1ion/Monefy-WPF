@@ -6,7 +6,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:Monefy_WPF.View"
         mc:Ignorable="d"
-        Title="Monefy" Height="600" Width="450" Background="#f2fff6">
+        Title="Monefy" Height="625" Width="460" Background="#f2fff6">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -29,7 +29,7 @@
             </Label>
             <Label Grid.Row="1" Margin="10,10,0,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Left" Content="$" FontSize="20" Width="20"/>
             <Button Command="{Binding RemoveDigit}" Grid.Row="1" Margin="0,10,10,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Right" Content="&lt;" FontSize="20" Width="50"/>
-            <TextBox Grid.Row="2" Margin="0,0,0,3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" BorderBrush="#969696" BorderThickness="0,0,0,2" >
+            <TextBox Text="{Binding NoteValue}" Grid.Row="2" Margin="0,0,0,3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" BorderBrush="#969696" BorderThickness="0,0,0,2" Visibility="{Binding NoteVisibility}">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Setter Property="Background" Value="#f2fff6"/>
@@ -91,22 +91,68 @@
             <Button Grid.Row="0" Grid.Column="2" Content="3" Name="but9"  Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but9}"/>
             <Button Grid.Row="1" Grid.Column="2" Content="6" Name="but10" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but10}"/>
             <Button Grid.Row="2" Grid.Column="2" Content="9" Name="but11" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but11}"/>
-            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Enter Categorie"/>
+            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Enter Categorie" Name="butEnter" Command="{Binding EnterCategorie}" CommandParameter="{Binding ElementName=butEnter}"/>
         </Grid>
         <Grid Grid.RowSpan="2">
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Height" Value="70"/>
+                    <Setter Property="Width" Value="140"/>
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="Margin" Value="2,1,2,0"/>
+                    <Setter Property="BorderBrush" Value="#69b984"/>
+                    <Setter Property="BorderThickness" Value="2,0,0,2"/>
+                    <Setter Property="Background" Value="#f2fff6"/>
+                    <Setter Property="Command" Value="{Binding AddCategorie}"/>
+                    <Style.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Grid.Resources>
             <!--Менюшки-->
             <Grid.RowDefinitions>
-                <RowDefinition Height="140*"/>
-                <RowDefinition Height="429*"/>
+                <RowDefinition Height="173*"/>
+                <RowDefinition Height="340*"/>
+                <RowDefinition Height="56*"/>
             </Grid.RowDefinitions>
             <!--Доход-->
-            <TabPanel Grid.Row="1" Background="#f2fff6" Visibility="Hidden">
-                <Button Height="50" Width="100" Margin="2"/>
-                <Button Height="50" Width="100" Margin="2"/>
-                <Button Height="50" Width="100" Margin="2"/>
-                <Button Height="50" Width="100" Margin="2"/>
+            <TabPanel Grid.Row="1" Background="#f2fff6" Visibility="{Binding PlusCategoriesView}">
+                <ScrollViewer
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+                    <TabPanel>
+                        <Button Content="Deposits" Foreground="#4ba17a" Name="Deposits" CommandParameter="{Binding ElementName=Deposits}"/>
+                        <Button Content="Salary" Foreground="#688e52" Name="Salary" CommandParameter="{Binding ElementName=Salary}"/>
+                        <Button Content="Savings" Foreground="#d0768f" Name="Savings" CommandParameter="{Binding ElementName=Savings}"/>
+                    </TabPanel>
+                </ScrollViewer>
             </TabPanel>
             <!--Траты-->
+            <TabPanel Grid.Row="1" Background="#f2fff6" Visibility="{Binding MinusCategoriesView}">
+                <ScrollViewer
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+                    <TabPanel>
+                        <Button Content="Toiletry" Foreground="#66829c" Name="Toiletry" CommandParameter="{Binding ElementName=Toiletry}"/>
+                        <Button Content="Food" Foreground="#c94178" Name="Food" CommandParameter="{Binding ElementName=Food}"/>
+                        <Button Content="House" Foreground="#5392b9" Name="House" CommandParameter="{Binding ElementName=House}"/>
+                        <Button Content="Health" Foreground="#a12828" Name="Health" CommandParameter="{Binding ElementName=Health}"/>
+                        <Button Content="Eating out" Foreground="#79bf8f" Name="Eating_out" CommandParameter="{Binding ElementName=Eating_out}"/>
+                        <Button Content="Car" Foreground="#8691a3" Name="Car" CommandParameter="{Binding ElementName=Car}"/>
+                        <Button Content="Clothes" Foreground="#b779d0" Name="Clothes" CommandParameter="{Binding ElementName=Clothes}"/>
+                        <Button Content="Pets" Foreground="#7abb99" Name="Pets" CommandParameter="{Binding ElementName=Pets}"/>
+                        <Button Content="Gifts" Foreground="#cfaeb8" Name="Gifts" CommandParameter="{Binding ElementName=Gifts}"/>
+                        <Button Content="Entertainment" Foreground="#e6a862" Name="Entertainment" CommandParameter="{Binding ElementName=Entertainment}"/>
+                        <Button Content="Communication" Foreground="#ccccd2" Name="Communication" CommandParameter="{Binding ElementName=Communication}"/>
+                        <Button Content="Sports" Foreground="#76bba9" Name="Sports" CommandParameter="{Binding ElementName=Sports}"/>
+                        <Button Content="Bills" Foreground="#ceae21" Name="Bills" CommandParameter="{Binding ElementName=Bills}"/>
+                        <Button Content="Taxi" Foreground="#c19026" Name="Taxi" CommandParameter="{Binding ElementName=Taxi}"/>
+                        <Button Content="Transport" Foreground="#c32f2f" Name="Transport" CommandParameter="{Binding ElementName=Transport}"/>
+                    </TabPanel>
+                </ScrollViewer>
+            </TabPanel>
         </Grid>
     </Grid>
 </Window>
