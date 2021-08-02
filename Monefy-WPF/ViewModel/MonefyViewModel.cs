@@ -31,7 +31,7 @@ namespace Monefy_WPF.ViewModel
         private double result;
         private double profit;
         string fileName;
-        bool emptyData;
+        bool emptyExpensData;
         private double pieChartSize;
         private readonly double center;
         private readonly double radius;
@@ -477,10 +477,10 @@ namespace Monefy_WPF.ViewModel
                     DataFilter.Add(data[data.Count - 1]);
                     if (!data[data.Count - 1].Income)
                     {
-                        if (emptyData)
+                        if (emptyExpensData)
                         {
                             Categories.Clear();
-                            emptyData = false;
+                            emptyExpensData = false;
                         }
                         if (Categories.Count(x => x.Cotegorie == data[data.Count - 1].Cotegorie) == 0)
                         {
@@ -608,7 +608,7 @@ namespace Monefy_WPF.ViewModel
             Categories.Clear();
             Expens = "0";
             Profit = "0";
-            emptyData = true;
+            emptyExpensData = true;
             if (data.Count != 0)
             {
                 bool today = false, month = false, year = false;
@@ -651,7 +651,7 @@ namespace Monefy_WPF.ViewModel
                     DataFilter.Add(item);
                     if (!item.Income)
                     {
-                        emptyData = false;
+                        emptyExpensData = false;
                         if (Categories.Count(x => x.Cotegorie == item.Cotegorie) == 0)
                         {
                             Categories.Add(new Data() { Cotegorie = item.Cotegorie, Color = item.Color, Money = item.Money });
@@ -668,7 +668,7 @@ namespace Monefy_WPF.ViewModel
                     }
                 }
             }
-            if (emptyData)
+            if (emptyExpensData)
             {
                 Categories.Add(new Data() { Cotegorie = "Empty", Color = "Gray", PrecentAge = 100 });
             }

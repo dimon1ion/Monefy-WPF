@@ -45,7 +45,22 @@
                 <Button Grid.Column="4" Content="&gt;&gt;" Name="plusMonth" CommandParameter="{Binding ElementName=plusMonth}"/>
             </Grid>
             <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#7ac795">
-                <Menu FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Background="#f2fff6">
+                <Label HorizontalAlignment="Right" VerticalAlignment="Center" Content="Options" Margin="0,0,5,0" FontSize="15" Foreground="White" BorderBrush="#7ac795">
+                    <Label.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="options" To="150"
+                                                         DecelerationRatio="1" Duration="0:0:0.5"
+                                                         Storyboard.TargetProperty="Width"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </Label.Triggers>
+                </Label>
+                <!--<Menu FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Background="#f2fff6">
                     <MenuItem Header="Options" Foreground="White" Background="#7ac795" BorderBrush="#7ac795">
                         <MenuItem Header="Filter" Background="#7ac795" BorderBrush="#7ac795">
                             <MenuItem Header="Day" Name="day" Command="{Binding Filter}" CommandParameter="{Binding ElementName=day}" Background="#7ac795" BorderBrush="#7ac795"/>
@@ -53,7 +68,7 @@
                             <MenuItem Header="Year" Name="year" Command="{Binding Filter}" CommandParameter="{Binding ElementName=year}" Background="#7ac795" BorderBrush="#7ac795"/>
                         </MenuItem>
                     </MenuItem>
-                </Menu>
+                </Menu>-->
                 <Label Foreground="White" FontWeight="Bold" FontStyle="Italic" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Monefy"/>
             </Grid>
             <Grid Grid.Column="0" Grid.Row="2">
@@ -133,6 +148,42 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="150" Name="widthOptions"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Menu FontSize="15" Name="options" HorizontalAlignment="Right" Width="0" Grid.Column="1" Grid.Row="0" Background="#7ac795">
+                    <Menu.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="options" 
+                                                         To="0" Duration="0:0:0.5"
+                                                         DecelerationRatio="1"
+                                                         Storyboard.TargetProperty="Width"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </Menu.Triggers>
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Vertical" HorizontalAlignment="Right"></VirtualizingStackPanel>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                        <MenuItem Header="Filter" Foreground="White" Background="#7ac795" BorderBrush="#7ac795">
+                            <MenuItem Header="Day" Name="day" Command="{Binding Filter}" CommandParameter="{Binding ElementName=day}" Background="#7ac795" BorderBrush="#7ac795"/>
+                            <MenuItem Header="Month" Name="month" Command="{Binding Filter}" CommandParameter="{Binding ElementName=month}" Background="#7ac795" BorderBrush="#7ac795"/>
+                            <MenuItem Header="Year" Name="year" Command="{Binding Filter}" CommandParameter="{Binding ElementName=year}" Background="#7ac795" BorderBrush="#7ac795"/>
+                        </MenuItem>
+                </Menu>
+            </Grid>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
