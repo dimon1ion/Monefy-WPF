@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Monefy_WPF.View"
         mc:Ignorable="d"
-        Title="Monefy" Height="600" Width="450" MinHeight="600" MinWidth="450" Background="#f2fff6">
+        Title="Monefy" Height="600" Width="450" MinHeight="600" MinWidth="450" Background="#f2fff6" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2.4*"/>

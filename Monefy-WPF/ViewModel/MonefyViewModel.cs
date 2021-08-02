@@ -335,7 +335,7 @@ namespace Monefy_WPF.ViewModel
                     if (day <= 0)
                     {
                         month--;
-                        day = DateTime.DaysInMonth(year,month);
+                        day = DateTime.DaysInMonth(year, month);
                     }
                     if (month <= 0)
                     {
@@ -541,6 +541,10 @@ namespace Monefy_WPF.ViewModel
 
         #region MonefyMainWindow Methods
 
+        public void Save()
+        {
+            fileService.Save(fileName, data);
+        }
         private void UpdatePieChart()
         {
             PieChart[0].Children.Clear();
@@ -604,7 +608,7 @@ namespace Monefy_WPF.ViewModel
             Categories.Clear();
             Expens = "0";
             Profit = "0";
-            bool foundForFilter = false;
+            emptyData = true;
             if (data.Count != 0)
             {
                 bool today = false, month = false, year = false;
@@ -645,10 +649,9 @@ namespace Monefy_WPF.ViewModel
                         else { continue; }
                     }
                     DataFilter.Add(item);
-                    foundForFilter = true;
-                    emptyData = false;
                     if (!item.Income)
                     {
+                        emptyData = false;
                         if (Categories.Count(x => x.Cotegorie == item.Cotegorie) == 0)
                         {
                             Categories.Add(new Data() { Cotegorie = item.Cotegorie, Color = item.Color, Money = item.Money });
@@ -665,10 +668,9 @@ namespace Monefy_WPF.ViewModel
                     }
                 }
             }
-            if (!foundForFilter)
+            if (emptyData)
             {
                 Categories.Add(new Data() { Cotegorie = "Empty", Color = "Gray", PrecentAge = 100 });
-                emptyData = true;
             }
             UpdatePieChart();
         }

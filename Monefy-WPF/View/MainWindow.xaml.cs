@@ -28,6 +28,11 @@ namespace Monefy_WPF.View
             InitializeComponent();
             DataContext = new MonefyViewModel(new JsonFileService());
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ((MonefyViewModel)DataContext).Save();
+        }
     }
 
 }
