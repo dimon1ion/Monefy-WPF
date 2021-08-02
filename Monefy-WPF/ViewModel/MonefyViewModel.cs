@@ -480,6 +480,7 @@ namespace Monefy_WPF.ViewModel
                         if (emptyData)
                         {
                             Categories.Clear();
+                            emptyData = false;
                         }
                         if (Categories.Count(x => x.Cotegorie == data[data.Count - 1].Cotegorie) == 0)
                         {
