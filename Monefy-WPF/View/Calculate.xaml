@@ -6,7 +6,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:Monefy_WPF.View"
         mc:Ignorable="d"
-        Title="Monefy" Height="625" Width="460" Background="#f2fff6">
+        Title="Monefy" Height="600" MinHeight="510" Width="460" MinWidth="200" Background="#f2fff6">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -20,15 +20,15 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="1" Margin="5" Content="{Binding LabelValue}" HorizontalContentAlignment="Center" FontSize="25" Foreground="White" BorderBrush="#69b984" BorderThickness="0,4,4,0" Background="#7ac792">
+            <Label Grid.Row="1" Margin="5" Content="{Binding LabelValue}" HorizontalContentAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="White" BorderBrush="#69b984" BorderThickness="0,4,4,0" Background="#7ac792">
                 <Label.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3"/>
                     </Style>
                 </Label.Resources>
             </Label>
-            <Label Grid.Row="1" Margin="10,10,0,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Left" Content="$" FontSize="20" Width="20"/>
-            <Button Command="{Binding RemoveDigit}" Grid.Row="1" Margin="0,10,10,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Right" Content="&lt;" FontSize="20" Width="50"/>
+            <Label Grid.Row="1" Margin="10,10,0,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Left" Content="$" FontSize="16" Width="20"/>
+            <Button Command="{Binding RemoveDigit}" Grid.Row="1" Margin="0,10,10,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Right" Content="&lt;" FontSize="18" Width="50"/>
             <TextBox Text="{Binding NoteValue}" Grid.Row="2" Margin="0,0,0,3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" BorderBrush="#969696" BorderThickness="0,0,0,2" Visibility="{Binding NoteVisibility}">
                 <TextBox.Style>
                     <Style TargetType="TextBox">

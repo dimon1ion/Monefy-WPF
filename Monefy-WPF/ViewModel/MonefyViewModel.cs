@@ -25,6 +25,7 @@ namespace Monefy_WPF.ViewModel
         private List<Data> data;
         private IFileService fileService;
         DateTime dateTimeUser;
+        DateTime DateTimeUser { get => dateTimeUser; set { dateTimeUser = value; OnPropertyChanged(nameof(UserDateTimeLabel)); } }
         string filterName;
         private double expens;
         private double result;
@@ -35,12 +36,29 @@ namespace Monefy_WPF.ViewModel
         private readonly double center;
         private readonly double radius;
         Command showCalculate;
-        Command filterToday;
-        Command filterMonth;
-        Command filterYear;
+        Command changeListVisible;
+        Command changeUserDateTime;
+        Command filter;
         bool plusShow;
         string buttonResultBackground;
         string buttonResultBorderBrush;
+        string listVisible;
+        public string UserDateTimeLabel
+        {
+            get => $"{dateTimeUser.Day} {GetMonthName(dateTimeUser.Month)} {dateTimeUser.Year}";
+        }
+        public string ListVisible
+        {
+            get => listVisible;
+            set
+            {
+                if (!Equals(listVisible, value))
+                {
+                    listVisible = value;
+                    OnPropertyChanged(nameof(ListVisible));
+                }
+            }
+        }
         public string BRBackground
         {
             get => buttonResultBackground;
@@ -129,9 +147,9 @@ namespace Monefy_WPF.ViewModel
         public ObservableCollection<Data> DataFilter { get; set; }
         public ObservableCollection<Canvas> PieChart { get; set; }
         public ICommand ShowCalculate => showCalculate;
-        public ICommand FilterToday => filterToday;
-        public ICommand FilterMonth => filterMonth;
-        public ICommand FilterYear => filterYear;
+        public ICommand Filter => filter;
+        public ICommand ChangeListVisible => changeListVisible;
+        public ICommand ChangeUserDateTime => changeUserDateTime;
 
         #endregion
 
@@ -229,19 +247,20 @@ namespace Monefy_WPF.ViewModel
             buttonResultBackground = "#7ac795";
             buttonResultBorderBrush = "#5aa377";
             expens = 0;
-            filterName = "Today";
+            listVisible = "Hidden";
+            filterName = "Day";
             pieChartSize = 200;
             center = pieChartSize / 2;
             radius = pieChartSize / 2;
             PieChart[0].Width = pieChartSize;
             PieChart[0].Height = pieChartSize;
-            dateTimeUser = DateTime.Now;
+            dateTimeUser = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             fileName = "Data.json";
             fileService = _fileService;
             data = fileService.Open(fileName);
-            data.Add(new Data() { Color = "Yellow", Cotegorie = "Mamix", Money = 2500.00, TimeCreate = DateTime.Now });
-            data.Add(new Data() { Color = "Red", Cotegorie = "Marmok", Money = 5000.00, TimeCreate = DateTime.Now });
-            data.Add(new Data() { Color = "Orange", Cotegorie = "COFFI", Money = 200.00, TimeCreate = new DateTime(DateTime.Now.Year, DateTime.Now.Month - 1, DateTime.Now.Day) });
+            //data.Add(new Data() { Color = "Yellow", Cotegorie = "Mamix", Money = 2500.00, TimeCreate = dateTimeUser });
+            //data.Add(new Data() { Color = "Red", Cotegorie = "Marmok", Money = 5000.00, TimeCreate = dateTimeUser });
+            //data.Add(new Data() { Color = "Orange", Cotegorie = "COFFI", Money = 200.00, TimeCreate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 1) });
 
 
             showCalculate = new Command(obj =>
@@ -265,29 +284,71 @@ namespace Monefy_WPF.ViewModel
                 minusCategoriesView = "Hidden";
                 NoteVisibility = "Visible";
             });
-            filterToday = new Command(obj =>
+            filter = new Command(obj =>
             {
-                filterName = "Today";
-                UpdateFilter();
+                if (obj is MenuItem)
+                {
+                    filterName = (obj as MenuItem).Header.ToString();
+                    UpdateFilter();
+                }
+                filter.Check();
             }, obj =>
             {
-                return filterName != "Today";
+                if (obj is MenuItem)
+                {
+                    return filterName != (obj as MenuItem).Header.ToString();
+                }
+                return false;
             });
-            filterMonth = new Command(obj =>
+            changeListVisible = new Command(obj =>
             {
-                filterName = "Month";
-                UpdateFilter();
-            }, obj =>
-            {
-                return filterName != "Month";
+                if (ListVisible == "Hidden")
+                {
+                    ListVisible = "Visible";
+                }
+                else { ListVisible = "Hidden"; }
             });
-            filterYear = new Command(obj =>
+            changeUserDateTime = new Command(obj =>
             {
-                filterName = "Year";
-                UpdateFilter();
-            }, obj =>
-            {
-                return filterName != "Year";
+                if (obj is Button)
+                {
+                    int year = dateTimeUser.Year;
+                    int month = dateTimeUser.Month;
+                    int day = dateTimeUser.Day;
+                    switch ((obj as Button).Content)
+                    {
+                        case "<":
+                            day--;
+                            break;
+                        case "<<":
+                            month--;
+                            break;
+                        case ">":
+                            DateTimeUser = dateTimeUser.AddDays(1);
+                            UpdateFilter();
+                            return;
+                        case ">>":
+                            DateTimeUser = dateTimeUser.AddMonths(1);
+                            UpdateFilter();
+                            return;
+                    }
+                    if (day <= 0)
+                    {
+                        month--;
+                        day = DateTime.DaysInMonth(year,month);
+                    }
+                    if (month <= 0)
+                    {
+                        year--;
+                        month = 12;
+                    }
+                    if (day > DateTime.DaysInMonth(year, month))
+                    {
+                        day = DateTime.DaysInMonth(year, month);
+                    }
+                    DateTimeUser = new DateTime(year, month, day);
+                    UpdateFilter();
+                }
             });
 
             UpdateFilter();
@@ -540,8 +601,8 @@ namespace Monefy_WPF.ViewModel
         {
             DataFilter.Clear();
             Categories.Clear();
-            expens = 0;
-            profit = 0;
+            Expens = "0";
+            Profit = "0";
             bool foundForFilter = false;
             if (data.Count != 0)
             {
@@ -549,13 +610,13 @@ namespace Monefy_WPF.ViewModel
                 switch (filterName)
                 {
                     default:
-                    case "Today":
+                    case "Day":
                         today = true;
                         month = true;
                         year = true;
                         break;
                     case "Month":
-                        today = true;
+                        year = true;
                         month = true;
                         break;
                     case "Year":
@@ -608,10 +669,40 @@ namespace Monefy_WPF.ViewModel
                 Categories.Add(new Data() { Cotegorie = "Empty", Color = "Gray", PrecentAge = 100 });
                 emptyData = true;
             }
-            filterToday.Check();
-            filterMonth.Check();
-            filterYear.Check();
             UpdatePieChart();
+        }
+        private string GetMonthName(int numOfMonth)
+        {
+            switch (numOfMonth)
+            {
+                case 1:
+                    return "January";
+                case 2:
+                    return "February";
+                case 3:
+                    return "March";
+                case 4:
+                    return "April";
+                case 5:
+                    return "May";
+                case 6:
+                    return "June";
+                case 7:
+                    return "July";
+                case 8:
+                    return "August";
+                case 9:
+                    return "September";
+                case 10:
+                    return "October";
+                case 11:
+                    return "November";
+                case 12:
+                    return "December";
+                default:
+                    return "";
+
+            }
         }
 
         #endregion

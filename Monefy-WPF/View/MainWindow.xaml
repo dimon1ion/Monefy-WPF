@@ -17,22 +17,46 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.11*"/>
+                <RowDefinition Height="0.09*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#f2fff6"/>
+                        <Setter Property="BorderBrush" Value="#f2fff6"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="Foreground" Value="Green"/>
+                        <Setter Property="Command" Value="{Binding ChangeUserDateTime}"/>
+                    </Style>
+                </Grid.Resources>
+                <Button Grid.Column="0" Content="&lt;&lt;" Name="minusMonth" CommandParameter="{Binding ElementName=minusMonth}"/>
+                <Button Grid.Column="1" Content="&lt;" Name="minusDay" CommandParameter="{Binding ElementName=minusDay}"/>
+                <Label Grid.Column="2" Content="{Binding UserDateTimeLabel}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Foreground="Green"/>
+                <Button Grid.Column="3" Content="&gt;" Name="plusDay" CommandParameter="{Binding ElementName=plusDay}"/>
+                <Button Grid.Column="4" Content="&gt;&gt;" Name="plusMonth" CommandParameter="{Binding ElementName=plusMonth}"/>
+            </Grid>
             <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#7ac795">
                 <Menu FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Right" Background="#f2fff6">
                     <MenuItem Header="Options" Foreground="White" Background="#7ac795" BorderBrush="#7ac795">
-                        <MenuItem Header="Filter" Foreground="Black">
-                            <MenuItem Header="Day" Command="{Binding FilterToday}"/>
-                            <MenuItem Header="Month" Command="{Binding FilterMonth}"/>
-                            <MenuItem Header="Year" Command="{Binding FilterYear}"/>
+                        <MenuItem Header="Filter" Background="#7ac795" BorderBrush="#7ac795">
+                            <MenuItem Header="Day" Name="day" Command="{Binding Filter}" CommandParameter="{Binding ElementName=day}" Background="#7ac795" BorderBrush="#7ac795"/>
+                            <MenuItem Header="Month" Name="month" Command="{Binding Filter}" CommandParameter="{Binding ElementName=month}" Background="#7ac795" BorderBrush="#7ac795"/>
+                            <MenuItem Header="Year" Name="year" Command="{Binding Filter}" CommandParameter="{Binding ElementName=year}" Background="#7ac795" BorderBrush="#7ac795"/>
                         </MenuItem>
                     </MenuItem>
                 </Menu>
                 <Label Foreground="White" FontWeight="Bold" FontStyle="Italic" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Monefy"/>
             </Grid>
-            <Grid Grid.Column="0" Grid.Row="1">
+            <Grid Grid.Column="0" Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="0.15*"/>
@@ -48,8 +72,8 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-            <ItemsControl Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding PieChart}" Margin="20,0"/>
-            <ScrollViewer Grid.Column="1" Grid.Row="1" Margin="20,0"
+            <ItemsControl Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding PieChart}" Margin="20,0"/>
+            <ScrollViewer Grid.Column="1" Grid.Row="2" Margin="20,0"
                       Padding="10"
                       VerticalAlignment="Center"
                       VerticalScrollBarVisibility="Auto"
@@ -79,10 +103,33 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <ListBox Visibility="Hidden" Grid.Row="2" Grid.ColumnSpan="2" Background="#f2fff6" BorderBrush="#f2fff6" ItemsSource="{Binding DataFilter}">
+            <ListBox Visibility="{Binding ListVisible}" Grid.Row="2" Grid.ColumnSpan="2" Background="#f2fff6" BorderBrush="#f2fff6" ItemsSource="{Binding DataFilter}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding Cotegorie}"/>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="Label">
+                                    <Setter Property="FontSize" Value="13"/>
+                                    <Setter Property="FontWeight" Value="Heavy"/>
+                                    <Setter Property="FontStyle" Value="Oblique"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Height="10" Width="10"
+                                       Background="{Binding IncomeColor, Mode=OneWay}">
+                                    <Label.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Label.Resources>
+                                </Label>
+                                <Label Content="{Binding Cotegorie}" Foreground="{Binding Color}"/>
+                                <Label Content="{Binding Money}"/>
+                                <Label Content="$"/>
+                                <Label Content="{Binding TimeCreate}"/>
+                            </StackPanel>
+                            <Label Foreground="Gray" Content="{Binding Note}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -102,7 +149,7 @@
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Row="0" Grid.Column="1" BorderBrush="{Binding BRBorderBrush}" BorderThickness="0,2,2,0" Content="{Binding Result}" Background="{Binding BRBackground}" FontSize="15" Foreground="White"/>
+                <Button Command="{Binding ChangeListVisible}" Grid.Row="0" Grid.Column="1" BorderBrush="{Binding BRBorderBrush}" BorderThickness="0,2,2,0" Content="{Binding Result}" Background="{Binding BRBackground}" FontSize="15" Foreground="White"/>
             </Grid>
             <Button Name="minusButton" Command="{Binding ShowCalculate}" CommandParameter="{Binding ElementName=minusButton}" Width="100" Height="100" Grid.Row="1" Grid.Column="0" Content="Minus" FontSize="30" Background="White" Foreground="#f47f7c" BorderBrush="#f47f7c" BorderThickness="6">
                 <Button.Resources>

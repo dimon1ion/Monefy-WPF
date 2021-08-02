@@ -18,6 +18,17 @@ namespace Monefy_WPF.Model
         public string Color { get; set; }
         public DateTime TimeCreate { get; set; }
         public bool Income { get; set; }
+        public string IncomeColor
+        {
+            get
+            {
+                if (Income)
+                {
+                    return "Green";
+                }
+                return "Red";
+            }
+        }
         public double Money { get; set; }
         public float PrecentAge { get => precentAge; set => precentAge = value; }
     }
