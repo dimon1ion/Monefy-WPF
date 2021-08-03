@@ -19,7 +19,40 @@ namespace Monefy_WPF.ViewModel
 {
     public class MonefyViewModel : INotifyPropertyChanged
     {
-        #region MonefyMainWindow Variables/Prop
+        #region Global
+
+        private string backgroundColor;
+        private string foregroungColor;
+
+        public string BackgroundColor
+        {
+            get => backgroundColor;
+            set
+            {
+                if (!Equals(backgroundColor, value))
+                {
+                    backgroundColor = value;
+                    OnPropertyChanged(nameof(BackgroundColor));
+                }
+            }
+        }
+        public string ForegroungColor
+        {
+            get => foregroungColor;
+            set
+            {
+                if (!Equals(foregroungColor, value))
+                {
+                    foregroungColor = value;
+                    OnPropertyChanged(nameof(ForegroungColor));
+                }
+            }
+        }
+
+
+        #endregion
+
+        #region MainWindow Variables/Prop
 
         Calculate calculateView;
         private List<Data> data;
@@ -39,6 +72,7 @@ namespace Monefy_WPF.ViewModel
         Command changeListVisible;
         Command changeUserDateTime;
         Command filter;
+        Command changeTheme;
         bool plusShow;
         string buttonResultBackground;
         string buttonResultBorderBrush;
@@ -150,12 +184,13 @@ namespace Monefy_WPF.ViewModel
         public ICommand Filter => filter;
         public ICommand ChangeListVisible => changeListVisible;
         public ICommand ChangeUserDateTime => changeUserDateTime;
+        public ICommand ChangeTheme => changeTheme;
 
         #endregion
 
         ////////////////////////////////////////////////////////////////////////
 
-        #region MonefyCalculate Variables/Prop
+        #region Calculate Variables/Prop
 
         private string noteVisibility;
         private string minusCategoriesView;
@@ -239,6 +274,13 @@ namespace Monefy_WPF.ViewModel
 
         public MonefyViewModel(IFileService _fileService)
         {
+            #region Global
+
+            backgroundColor = "#f2fff6";
+            foregroungColor = "White";
+
+            #endregion
+
             #region MainWindow Initialize
 
             Categories = new ObservableCollection<Data>();
@@ -348,6 +390,25 @@ namespace Monefy_WPF.ViewModel
                     }
                     DateTimeUser = new DateTime(year, month, day);
                     UpdateFilter();
+                }
+            });
+            changeTheme = new Command(obj =>
+            {
+                if (obj is MenuItem)
+                {
+                    if ((obj as MenuItem).IsCheckable)
+                    {
+                        if ((obj as MenuItem).IsChecked)
+                        {
+                            BackgroundColor = "#313131";
+                            ForegroungColor = "White";
+                        }
+                        else
+                        {
+                            BackgroundColor = "#f2fff6";
+                            ForegroungColor = "Black";
+                        }
+                    }
                 }
             });
 
@@ -507,7 +568,20 @@ namespace Monefy_WPF.ViewModel
                 }
             }, obj =>
             {
-                return Double.Parse(labelValue) > 0f;
+                if (obj is Button)
+                {
+                    if (Double.Parse(labelValue) > 0)
+                    {
+                        (obj as Button).Opacity = 1;
+                        return true;
+                    }
+                    else
+                    {
+                        (obj as Button).Opacity = 0.3;
+                        return false;
+                    }
+                }
+                return Double.Parse(labelValue) > 0;
             });
 
 

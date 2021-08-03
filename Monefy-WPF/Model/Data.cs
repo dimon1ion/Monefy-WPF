@@ -9,10 +9,6 @@ namespace Monefy_WPF.Model
     public class Data
     {
         private float precentAge;
-        public Data()
-        {
-
-        }
         public string Cotegorie { get; set; }
         public string Note { get; set; }
         public string Color { get; set; }

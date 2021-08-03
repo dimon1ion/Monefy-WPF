@@ -6,7 +6,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:Monefy_WPF.View"
         mc:Ignorable="d"
-        Title="Monefy" Height="600" MinHeight="510" Width="460" MinWidth="200" Background="#f2fff6">
+        Title="Monefy" Height="540" MinHeight="510" Width="460" MinWidth="200" Background="{Binding BackgroundColor}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -32,11 +32,11 @@
             <TextBox Text="{Binding NoteValue}" Grid.Row="2" Margin="0,0,0,3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" BorderBrush="#969696" BorderThickness="0,0,0,2" Visibility="{Binding NoteVisibility}">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
-                        <Setter Property="Background" Value="#f2fff6"/>
+                        <Setter Property="Background" Value="{Binding BackgroundColor}"/>
                         <Style.Resources>
                             <VisualBrush x:Key="myBrush" AlignmentX="Left" AlignmentY="Bottom" Stretch="None">
                                 <VisualBrush.Visual>
-                                    <Label Content="Note" Background="#f2fff6" Foreground="LightGray"/>
+                                    <Label Content="Note" Background="{Binding BackgroundColor}" Foreground="LightGray"/>
                                 </VisualBrush.Visual>
                             </VisualBrush>
                         </Style.Resources>
@@ -48,7 +48,7 @@
                                 <Setter Property="Background" Value="{StaticResource myBrush}"></Setter>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter Property="Background" Value="#f2fff6"></Setter>
+                                <Setter Property="Background" Value="{Binding BackgroundColor}"></Setter>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -58,11 +58,12 @@
         <Grid Grid.Row="1">
             <Grid.Resources>
                 <Style TargetType="Button">
-                    <Setter Property="Background" Value="#f2fff6"/>
+                    <Setter Property="Background" Value="{Binding BackgroundColor}"/>
+                    <Setter Property="Foreground" Value="{Binding ForegroungColor}"/>
                     <Setter Property="BorderBrush" Value="#69b984"/>
                     <Setter Property="Margin" Value="3"/>
                     <Setter Property="FontSize" Value="25"/>
-                    <!--<Setter Property="Command" Value="{Binding ElementName=myElement, Path=DataContext.AddCommand}" />-->
+                    <Setter Property="Command" Value="{Binding AddDigit}"/>
                 </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
@@ -78,19 +79,19 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--Ряд-->
-            <Button Grid.Row="0" Grid.Column="0" Content="1" Name="but1" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but1}"/>
-            <Button Grid.Row="1" Grid.Column="0" Content="4" Name="but2" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but2}"/>
-            <Button Grid.Row="2" Grid.Column="0" Content="7" Name="but3" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but3}"/>
-            <Button Grid.Row="3" Grid.Column="0" Content="," Name="but4" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but4}"/>
+            <Button Grid.Row="0" Grid.Column="0" Content="1" Name="but1" CommandParameter="{Binding ElementName=but1}"/>
+            <Button Grid.Row="1" Grid.Column="0" Content="4" Name="but2" CommandParameter="{Binding ElementName=but2}"/>
+            <Button Grid.Row="2" Grid.Column="0" Content="7" Name="but3" CommandParameter="{Binding ElementName=but3}"/>
+            <Button Grid.Row="3" Grid.Column="0" Content="," Name="but4" CommandParameter="{Binding ElementName=but4}"/>
             <!--Ряд-->
-            <Button Grid.Row="0" Grid.Column="1" Content="2" Name="but5" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but5}"/>
-            <Button Grid.Row="1" Grid.Column="1" Content="5" Name="but6" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but6}"/>
-            <Button Grid.Row="2" Grid.Column="1" Content="8" Name="but7" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but7}"/>
-            <Button Grid.Row="3" Grid.Column="1" Content="0" Grid.ColumnSpan="2" Name="but8" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but8}"/>
+            <Button Grid.Row="0" Grid.Column="1" Content="2" Name="but5" CommandParameter="{Binding ElementName=but5}"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="5" Name="but6" CommandParameter="{Binding ElementName=but6}"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="8" Name="but7" CommandParameter="{Binding ElementName=but7}"/>
+            <Button Grid.Row="3" Grid.Column="1" Content="0" Grid.ColumnSpan="2" Name="but8" CommandParameter="{Binding ElementName=but8}"/>
             <!--Ряд-->
-            <Button Grid.Row="0" Grid.Column="2" Content="3" Name="but9"  Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but9}"/>
-            <Button Grid.Row="1" Grid.Column="2" Content="6" Name="but10" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but10}"/>
-            <Button Grid.Row="2" Grid.Column="2" Content="9" Name="but11" Command="{Binding AddDigit}" CommandParameter="{Binding ElementName=but11}"/>
+            <Button Grid.Row="0" Grid.Column="2" Content="3" Name="but9"  CommandParameter="{Binding ElementName=but9}"/>
+            <Button Grid.Row="1" Grid.Column="2" Content="6" Name="but10" CommandParameter="{Binding ElementName=but10}"/>
+            <Button Grid.Row="2" Grid.Column="2" Content="9" Name="but11" CommandParameter="{Binding ElementName=but11}"/>
             <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Enter Categorie" Name="butEnter" Command="{Binding EnterCategorie}" CommandParameter="{Binding ElementName=butEnter}"/>
         </Grid>
         <Grid Grid.RowSpan="2">
@@ -102,7 +103,7 @@
                     <Setter Property="Margin" Value="2,1,2,0"/>
                     <Setter Property="BorderBrush" Value="#69b984"/>
                     <Setter Property="BorderThickness" Value="2,0,0,2"/>
-                    <Setter Property="Background" Value="#f2fff6"/>
+                    <Setter Property="Background" Value="{Binding BackgroundColor}"/>
                     <Setter Property="Command" Value="{Binding AddCategorie}"/>
                     <Style.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -118,7 +119,7 @@
                 <RowDefinition Height="56*"/>
             </Grid.RowDefinitions>
             <!--Доход-->
-            <TabPanel Grid.Row="1" Background="#f2fff6" Visibility="{Binding PlusCategoriesView}">
+            <TabPanel Grid.Row="1" Background="{Binding BackgroundColor}" Visibility="{Binding PlusCategoriesView}">
                 <ScrollViewer
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
@@ -130,7 +131,7 @@
                 </ScrollViewer>
             </TabPanel>
             <!--Траты-->
-            <TabPanel Grid.Row="1" Background="#f2fff6" Visibility="{Binding MinusCategoriesView}">
+            <TabPanel Grid.Row="1" Background="{Binding BackgroundColor}" Visibility="{Binding MinusCategoriesView}">
                 <ScrollViewer
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
