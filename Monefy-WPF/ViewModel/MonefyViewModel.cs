@@ -277,7 +277,7 @@ namespace Monefy_WPF.ViewModel
             #region Global
 
             backgroundColor = "#f2fff6";
-            foregroungColor = "White";
+            foregroungColor = "Black";
 
             #endregion
 
