@@ -29,7 +29,7 @@
             </Label>
             <Label Grid.Row="1" Margin="10,10,0,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Left" Content="$" FontSize="16" Width="20"/>
             <Button Command="{Binding RemoveDigit}" Grid.Row="1" Margin="0,10,10,5" BorderBrush="#7ac792" Foreground="White" Background="#7ac792" HorizontalAlignment="Right" Content="&lt;" FontSize="18" Width="50"/>
-            <TextBox Text="{Binding NoteValue}" Grid.Row="2" Margin="0,0,0,3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" BorderBrush="#969696" BorderThickness="0,0,0,2" Visibility="{Binding NoteVisibility}">
+            <TextBox Text="{Binding NoteValue}" Foreground="{Binding ForegroungColor}" Grid.Row="2" Margin="0,0,0,3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" BorderBrush="#969696" BorderThickness="0,0,0,2" Visibility="{Binding NoteVisibility}">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Setter Property="Background" Value="{Binding BackgroundColor}"/>
